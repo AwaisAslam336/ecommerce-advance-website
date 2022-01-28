@@ -79,9 +79,7 @@
           <li class="{{ ($route=='add_product')? 'active':'' }}">
             <a href="{{ route('add_product') }}"><i class="ti-more"></i>Add Product</a>
           </li>
-          <li class="{{ ($route=='manage_products')? 'active':'' }}">
-            <a href="{{ route('manage_products') }}"><i class="ti-more"></i>Manage Products</a>
-          </li>
+          
         </ul>
       </li>
 

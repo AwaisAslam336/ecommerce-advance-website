@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Backend\AdminProfileController;
 use App\Http\Controllers\Backend\BrandController;
 use App\Http\Controllers\Backend\CategoryController;
+use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\SubCategoryController;
 use App\Http\Controllers\Backend\SubSubCategoryController;
 use App\Http\Controllers\Frontend\IndexController;
@@ -75,11 +76,13 @@ Route::prefix('subsubcategory')->group(function(){
     Route::post('/update',[SubSubCategoryController::class,'UpdateSubSubCategory'])->name('update_subsubcategory');
     Route::get('/delete/{id}',[SubSubCategoryController::class,'DeleteSubSubCategory'])->name('delete_subsubcategory');
     Route::get('/subcategory/ajax/{category_id}',[SubSubCategoryController::class,'GetSubCategory']);
+    Route::get('/sub-subcategory/ajax/{subcategory_id}',[SubSubCategoryController::class,'GetSubSubCategory']);
 });
 
 //Admin Products all Route
 Route::prefix('product')->group(function(){
-    Route::get('/add',[SubSubCategoryController::class,'AddProduct'])->name('add_product');
+    Route::get('/add',[ProductController::class,'AddProduct'])->name('add_product');
+    Route::post('/store',[ProductController::class,'StoreProduct'])->name('store_product');
     
 });
 
@@ -106,3 +109,4 @@ Route::get('/dashboard',[IndexController::class,'UserDashboard'])->middleware(['
 
 
 require __DIR__.'/auth.php';
+        

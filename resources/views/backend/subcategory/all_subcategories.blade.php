@@ -82,7 +82,7 @@
                                 @csrf
                                 <div class="col-12">
                                 <div class="form-group">
-                                    <h5>Basic Select <span class="text-danger">*</span></h5>
+                                    <h5>Select Category <span class="text-danger">*</span></h5>
                                     <div class="controls">
                                         <select name="category_id" class="form-control">
                                             <option value="" selected disabled>Select Category</option>

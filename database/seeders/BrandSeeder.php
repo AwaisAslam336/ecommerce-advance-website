@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Admin;
+use App\Models\Brand;
 use Illuminate\Database\Seeder;
 
-class AdminSeeder extends Seeder
+class BrandSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +14,6 @@ class AdminSeeder extends Seeder
      */
     public function run()
     {
-        Admin::factory(1)->create();
+        Brand::factory(4)->create();
     }
 }
