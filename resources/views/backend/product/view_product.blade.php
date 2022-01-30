@@ -52,10 +52,10 @@
                                         <td>{{$product->product_name_urdu}}</td>
                                         <td>{{$product->product_qty}}</td>
                                         <td width="30%">
-                                            <a href="" class="btn btn-info" title="Edit Data"><i class="fa fa-pencil"></i></a>
+                                            <a href="{{route('edit_product',$product->id)}}" class="btn btn-info" title="Edit Data"><i class="fa fa-pencil"></i></a>
                                             <a href="" class="btn btn-danger" title="Delete Data" id="delete"><i class="fa fa-trash"></i></a>
                                         </td>
-                                        <!-- route('edit_product',$product->id)
+                                        <!-- 
                                         route('delete_product',$product->id) -->
                                     </tr>
                                     @endforeach
