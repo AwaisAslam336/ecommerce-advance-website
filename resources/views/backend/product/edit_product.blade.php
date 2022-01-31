@@ -219,7 +219,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                       
+
                                     </div>
                                     <div class="row">
                                         <!--6th Row -->
@@ -301,13 +301,11 @@
 
                                                 <div class="controls">
                                                     <fieldset>
-                                                        <input type="checkbox" id="checkbox_2" name="hot_deals" value="1"
-                                                                 {{$product->hot_deals==1 ? 'checked':''}}>
+                                                        <input type="checkbox" id="checkbox_2" name="hot_deals" value="1" {{$product->hot_deals==1 ? 'checked':''}}>
                                                         <label for="checkbox_2">Hot Deals</label>
                                                     </fieldset>
                                                     <fieldset>
-                                                        <input type="checkbox" id="checkbox_3" name="featured" value="1"
-                                                                {{$product->featured==1 ? 'checked':''}}>
+                                                        <input type="checkbox" id="checkbox_3" name="featured" value="1" {{$product->featured==1 ? 'checked':''}}>
                                                         <label for="checkbox_3">Featured</label>
                                                     </fieldset>
                                                 </div>
@@ -318,13 +316,11 @@
 
                                                 <div class="controls">
                                                     <fieldset>
-                                                        <input type="checkbox" id="checkbox_4" name="special_offer" value="1"
-                                                                {{$product->special_offer==1 ? 'checked':''}}>
+                                                        <input type="checkbox" id="checkbox_4" name="special_offer" value="1" {{$product->special_offer==1 ? 'checked':''}}>
                                                         <label for="checkbox_4">Special Offer</label>
                                                     </fieldset>
                                                     <fieldset>
-                                                        <input type="checkbox" id="checkbox_5" name="special_deals" value="1"
-                                                                {{$product->special_deals==1 ? 'checked':''}}>
+                                                        <input type="checkbox" id="checkbox_5" name="special_deals" value="1" {{$product->special_deals==1 ? 'checked':''}}>
                                                         <label for="checkbox_5">Special Deals</label>
                                                     </fieldset>
                                                 </div>
@@ -335,7 +331,7 @@
                             </div>
 
                             <div class="text-xs-right">
-                                <input type="submit" class="btn btn-rounded btn-info" value="Add Product">
+                                <input type="submit" class="btn btn-rounded btn-info" value="Update Product Data">
                             </div>
                         </form>
                     </div>
@@ -344,14 +340,109 @@
             <!-- /.col -->
         </div>
         <!-- /.row -->
-</div>
-<!-- /.box-body -->
-</div>
-<!-- /.box -->
 
-</section>
-<!-- /.content -->
+    </section>
+    <!-- /.content -->
+
+    <!-- ///////////////start multiple image update area///////////////// -->
+
+
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box bt-3 border-info">
+                    <div class="box-header">
+                        <h4 class="box-title">Product Multiple Image <strong>Update</strong></h4>
+                    </div>
+
+                    <form action="{{route('update_product_image')}}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="row row-sm p-15">
+                            @foreach ($multiImages as $img)
+                            <div class="col-md-4">
+                                <div class="card" style="width: 18rem;">
+                                    <img src="{{asset($img->photo_name)}}" class="card-img-top">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <a href="{{route('delete_product_multiImage',$img->id)}}" class="btn btn-sm btn-danger" id="delete" title="Delete Data">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+                                        </h5>
+                                        <p class="card-text">
+                                        <div class="form-group">
+                                            <label for="" class="form-control-label">
+                                                Change Image <span class="tx-danger">*</span>
+                                            </label>
+                                            <input class="form-control" type="file" name="multi_img[ {{$img->id}} ]">
+                                        </div>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+
+                        <div class="text-xs-right p-15">
+                            <input type="submit" class="btn btn-rounded btn-info" value="Update Product Images">
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box bt-3 border-info">
+                    <div class="box-header">
+                        <h4 class="box-title">Product Thumbnail Image <strong>Update</strong></h4>
+                    </div>
+
+                    <form action="{{route('update_product_thumbnail')}}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" name="id" value="{{$product->id}}">
+                        <input type="hidden" name="old_img" value="{{$product->product_thumbnail}}">
+
+                        <div class="row row-sm p-15">
+                            
+                            <div class="col-md-4">
+                                <div class="card" style="width: 18rem;">
+                                    <img src="{{asset($product->product_thumbnail)}}" class="card-img-top">
+                                    <div class="card-body">
+                                       
+                                        <p class="card-text">
+                                        <div class="form-group">
+                                            <label for="" class="form-control-label">
+                                                Change Image <span class="tx-danger">*</span>
+                                            </label>
+                                            <input type="file" name="product_thumbnail" class="form-control" onchange="mainThumbUrl(this)">
+                                            <img src="" id="mainThumb">
+                                        </div>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                        <div class="text-xs-right p-15">
+                            <input type="submit" class="btn btn-rounded btn-info" value="Update Product Thumbnail">
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+    </section>
 </div>
+
+
+
 <script type="text/javascript">
     $(document).ready(function() {
         $('select[name="category_id"]').on('change', function() {

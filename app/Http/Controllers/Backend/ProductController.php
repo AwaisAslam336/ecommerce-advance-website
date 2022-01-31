@@ -29,7 +29,7 @@ class ProductController extends Controller
         Image::make($image)->resize(917, 1000)->save('upload/products/thumbnail/' . $name_gen);
         $save_url = 'upload/products/thumbnail/' . $name_gen;
 
-        $product_id =Product::insertGetId([
+        $product_id = Product::insertGetId([
             'brand_id' => $request->brand_id,
             'category_id' => $request->category_id,
             'subcategory_id' => $request->subcategory_id,
@@ -71,9 +71,9 @@ class ProductController extends Controller
             $store_url = 'upload/products/multi_img/' . $name_make;
 
             MultiImg::insert([
-                'product_id'=> $product_id,
-                'photo_name'=> $store_url,
-                'created_at'=> Carbon::now(),
+                'product_id' => $product_id,
+                'photo_name' => $store_url,
+                'created_at' => Carbon::now(),
             ]);
         }
         //////////////////////////////////////////////////////
@@ -83,23 +83,26 @@ class ProductController extends Controller
             'alert-type' => 'success'
         );
         return redirect()->route('manage_product')->with($notification);
-
     }
-    public function ManageProduct(){
+    public function ManageProduct()
+    {
         $products = Product::latest()->get();
-        return view('backend.product.view_product',compact('products'));
+        return view('backend.product.view_product', compact('products'));
     }
-    
-    public function EditProduct($id){
+
+    public function EditProduct($id)
+    {
+        $multiImages = MultiImg::where('product_id', $id)->get();
         $categories = Category::latest()->get();
         $subcategories = SubCategory::latest()->get();
         $subsubcategories = SubSubCategory::latest()->get();
         $brands = Brand::latest()->get();
         $product = Product::findOrFail($id);
 
-        return view('backend.product.edit_product',compact('categories','subcategories','subsubcategories','brands','product'));
+        return view('backend.product.edit_product', compact('categories', 'subcategories', 'subsubcategories', 'brands', 'product', 'multiImages'));
     }
-    public function UpdateProductData(Request $request){
+    public function UpdateProductData(Request $request)
+    {
         $product_id = $request->id;
         Product::findOrFail($product_id)->update([
             'brand_id' => $request->brand_id,
@@ -141,4 +144,65 @@ class ProductController extends Controller
         return redirect()->route('manage_product')->with($notification);
     }
 
+    public function UpdateProductImage(Request $request)
+    {
+        $imgs = $request->multi_img;
+        foreach ($imgs as $id => $img) {
+
+            $imgDel = MultiImg::findOrFail($id);
+            unlink($imgDel->photo_name);
+
+            $name_gen = hexdec(uniqid()) . '.' . $img->getClientOriginalExtension();
+            Image::make($img)->resize(917, 1000)->save('upload/products/multi_img/' . $name_gen);
+            $save_url = 'upload/products/multi_img/' . $name_gen;
+
+            MultiImg::where('id',$id)->update([
+                'photo_name' => $save_url,
+                'updated_at' => Carbon::now()
+            ]);
+
+        }
+
+        $notification = array(
+            'message' => 'Product Image Updated',
+            'alert-type' => 'success'
+        );
+        return redirect()->back()->with($notification);
+    }
+
+    public function UpdateProductThumbnail(Request $request){
+        $prod_id = $request->id;
+        $oldImg = $request->old_img;
+        unlink($oldImg);
+
+        $image = $request->file('product_thumbnail');
+        $name_gen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
+        Image::make($image)->resize(917, 1000)->save('upload/products/thumbnail/' . $name_gen);
+        $save_url = 'upload/products/thumbnail/' . $name_gen;
+
+        Product::findOrFail($prod_id)->update([
+            'product_thumbnail' => $save_url,
+            'updated_at' => Carbon::now()
+        ]);
+
+        $notification = array(
+            'message' => 'Product Thumbnail Updated',
+            'alert-type' => 'success'
+        );
+        return redirect()->back()->with($notification);
+
+    }
+
+    public function DeleteMultiImage($id){
+
+        $oldImg = MultiImg::findOrFail($id);
+        unlink($oldImg->photo_name);
+        MultiImg::findOrFail($id)->delete();
+
+        $notification = array(
+            'message' => 'Product Image deleted',
+            'alert-type' => 'success'
+        );
+        return redirect()->back()->with($notification);
+    }
 }
